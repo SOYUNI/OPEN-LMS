@@ -70,22 +70,6 @@ public class HomeController {
 		
 		PagingUtil pu = new PagingUtil(currentPageNo,recordCountPerPage,pageSize,totalRecordCount);
 		
-		/*
-		logger.info("getFirstPageNoOnPageList : "+pu.getFirstPageNoOnPageList());
-		logger.info("getFirstRecordIndex : "+pu.getFirstRecordIndex());
-		logger.info("getLastRecordIndex : "+pu.getLastRecordIndex());
-		logger.info("getLastPageNoOnPageList : "+pu.getLastPageNoOnPageList());
-		logger.info("totalPageCount : "+pu.getTotalPageCount());
-		*/
-		
-		/*
-		for(int i = 1 ; i < 30 ; i ++){
-		logger.info("teacher"+i+" : "+testSHA256("teacher"+i));
-		}
-		*/
-					        
-	
-		
 		return "home";
 	}
 	
