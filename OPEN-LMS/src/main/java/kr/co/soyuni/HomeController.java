@@ -70,6 +70,8 @@ public class HomeController {
 		
 		PagingUtil pu = new PagingUtil(currentPageNo,recordCountPerPage,pageSize,totalRecordCount);
 		
+		logger.info(" "+ pu.getCurrentPageNo());
+		
 		return "home";
 	}
 	
