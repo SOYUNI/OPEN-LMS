@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+	
+
+	<!-- 스프링 시큐리티 기본 설정. 로그인 페이지의 url 및 로그아웃 페이지의 url, 쿠기 설정 -->
+	<security:http 	auto-config="true" 
+					use-expressions="true"
+					create-session="never" >
+		<security:form-login login-processing-url="/static/j_spring_security_check"
+			login-page="/login"
+			always-use-default-target="false"
+			authentication-failure-url="/login?login_error=t"
+			authentication-success-handler-ref="customAuthenticationSuccessHandler"
+			authentication-failure-handler-ref="authenticationFailureHandler"
+			default-target-url="/loginSuccess" />
+		<security:logout logout-url="/static/j_spring_security_logout" />
+		<security:remember-me key="myKey" token-validity-seconds="1209600" />
+ 		<security:intercept-url pattern="/member/modi01" access="hasAnyRole('ROLE_ADM','ROLE_PROF','ROLE_STU') "/>  
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADM')"/>
+		<security:intercept-url pattern="/myclass/**" access="hasAnyRole('ROLE_ADM','ROLE_STU','ROLE_PROF')"/>
+<!-- 		<security:intercept-url pattern="/member/**" access="hasAnyRole('ROLE_ADMIN','ROLE_STU','ROLE_PROF')"/>	-->
+	 	<security:intercept-url pattern="/reply_*" access="ROLE_STU"/>
+        <!-- 동일 아이디 동시접속 수 -->
+        <security:session-management>
+            <security:concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+        </security:session-management>
+	 	
+	</security:http>
+	
+        <bean id="authenticationFailureHandler"	class="kr.co.soyuni.auth.UserAuthenticationFailureHandler"></bean> 
+	<bean id="customAuthenticationSuccessHandler" class="kr.co.soyuni.auth.CustomAuthenticationSuccessHandler"></bean>
+
+	<!--  세션 종료시 로그아웃 처리 빈 -->
+	<!-- <bean id="sessionDestoryListener" class="kr.co.soyuni.util.SessionDestoryListener"></bean>-->
+	
+	
+	<!-- 데이터베이스 인증 방식 -->
+	<bean id="jdbcUserService"
+			class="kr.co.soyuni.auth.CustomJdbcDaoImpl" >
+		<property name="usersByUsernameQuery" value="select mem_id , passwd ,name, is_active enabled, mem_role authorities  from MEMBERS where mem_id = ? "/>
+		<property name="authoritiesByUsernameQuery" value="select mem_role AUTHORITY  ,mem_id , name from MEMBERS where mem_id = ?"/>
+		<property name="rolePrefix" value=""/>
+		<property name="dataSource" ref="dataSource"/>
+		<property name="enableGroups" value="false"/>
+	</bean>
+	
+	
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="jdbcUserService">
+<!-- 			<security:password-encoder hash="md5" base64="true"/>
+			<security:password-encoder hash="plaintext"></security:password-encoder> -->
+			<security:password-encoder hash="sha-256"></security:password-encoder> 
+		</security:authentication-provider>
+	</security:authentication-manager> 
+	
+	
+</beans>

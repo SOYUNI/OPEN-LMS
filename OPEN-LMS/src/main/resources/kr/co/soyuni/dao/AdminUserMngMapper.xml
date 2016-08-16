@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.soyuni.dao.AdminUserMngMapper">
+	
+	<select id="getAllTotalUserList" parameterType="hashmap"  resultType="int">
+	
+		SELECT
+			count(*)
+			
+		FROM MEMBERS
+		
+		WHERE mem_role != 'ROLE_ADM'
+	
+	</select>		
+		
+	<select id="getAllUserList" parameterType="hashmap" resultType="Members">
+	
+		SELECT
+			*
+			
+		FROM MEMBERS
+		
+		WHERE mem_role != 'ROLE_ADM'
+		
+		limit #{start}, #{end}
+	
+	</select>		
+		
+			         				    					
+</mapper>

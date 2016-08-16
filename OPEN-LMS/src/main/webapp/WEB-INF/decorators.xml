@@ -1,0 +1,43 @@
+<decorators defaultdir="/WEB-INF/views">
+	<excludes>
+		<pattern>/myContents*</pattern>
+		<pattern>/sample*</pattern>		
+		<pattern>/index*</pattern>
+		<pattern>/login*</pattern>
+		<pattern>/login.jsp</pattern>
+		<pattern>/common/*</pattern>
+			<pattern>/WEB-INF/views/login.jsp*</pattern>
+			<pattern>/exam/*</pattern>
+	</excludes>	
+     <decorator name="default" page="decorator.jsp">
+             <pattern>/admin*</pattern>
+      </decorator>
+       
+	 <decorator name="_header" page="decorators/header.jsp" />
+	 <decorator name="_sidebar" page="include/left_menu_call.jsp"  />
+	 <decorator name="_footer" page="decorators/footer.jsp" />	     
+	 
+	 <!-- 학생 로그인 후 나의강의실에 특화된 페이지 
+	 <decorator name="myclass_header" page="decorators/myclass_header.jsp" />
+	 <decorator name="myclass_sidebar" page="include/left_menu_myclass.jsp"  />
+	 <decorator name="myclass_footer" page="decorators/myclass_footer.jsp" />		 
+	 -->
+     <!-- 	 
+     <decorator name="main" page="main-user-decorator.jsp">
+             <pattern>/*</pattern>
+      </decorator> 
+
+     <decorator name="sub" page="sub-user-decorator.jsp">
+             <pattern>/sdc/*</pattern>
+             <pattern>/comm/*</pattern>
+      </decorator>
+      
+     <decorator name="member" page="member-user-decorator.jsp">
+             <pattern>/member/*</pattern>
+      </decorator>	   
+      	      		 
+     <decorator name="myclass" page="myclass-user-decorator.jsp">
+             <pattern>/myclass/*</pattern>
+      </decorator>	
+      --> 	      	      		  
+ </decorators> 
